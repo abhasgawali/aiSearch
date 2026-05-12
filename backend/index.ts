@@ -2,6 +2,7 @@ import express, { urlencoded } from "express";
 import { tavily } from "@tavily/core"
 import { Ollama } from "ollama"
 import {SYSTEM_PROMPT} from "./prompt.ts"
+import { prisma } from "./db.ts";
 const app = express();
 const client = tavily({ apiKey: process.env.TAVILY_API_KEY});
 const ollama = new Ollama({
@@ -10,6 +11,9 @@ const ollama = new Ollama({
     Authorization: "Bearer " + process.env.AI_GATEWAY_API_KEY,
   },
 });
+
+
+
 app.use(express.json());
 app.post( "/signup" , async ( req , res )=>{
 } )
