@@ -1,26 +1,43 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { SearchIcon , GoogleIcon ,GitHubIcon } from '../components/svgs/AuthIcons';
 import { supabase } from '../utils/supabase';
 import { Button } from '../components/ui/Button';
 import { useNavigate } from 'react-router';
+import { useToast } from '../lib/ToastContext';
 
 export default function Auth() {
     const navigate = useNavigate()
-  const [mode, setMode] = useState<'signin' | 'signup'>('signin');
-  const isSignUp = mode === 'signup';
+    const { addToast } = useToast();
+    const [mode, setMode] = useState<'signin' | 'signup'>('signin');
+    const [loading, setLoading] = useState(false);
+    const isSignUp = mode === 'signup';
 
-  async function login(provider: "github" | "google" ) {
-    const { error } = await supabase.auth.signInWithOAuth({
-        provider
-    })
-    if(error){
-        console.log(error);
+    useEffect(() => {
+    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        addToast('Successfully signed in!', 'success');
+        navigate('/ask');
+      }
+    });
 
-    }else{
-        navigate("/ask")
+      return () => {
+        authListener.subscription.unsubscribe();
+      };
+    }, [navigate, addToast]);
+
+    async function login(provider: "github" | "google" ) {
+      setLoading(true);
+      const { error } = await supabase.auth.signInWithOAuth({
+          provider,
+          options: {
+              redirectTo: window.location.origin + '/ask'
+          }
+      })
+      if(error){
+          addToast(`Failed to sign in with ${provider}: ${error.message}`, 'error');
+      }
+      setLoading(false);
     }
-   
-  }
 
   return (
     <div className="min-h-screen bg-warm-950 flex items-center justify-center px-4">
@@ -41,12 +58,12 @@ export default function Auth() {
 
         {/* OAuth Buttons */}
         <div className="w-full flex flex-col gap-3">
-          <Button onClick={()=>login("google")} className="w-full flex items-center justify-center gap-3 py-3.5 rounded-sm bg-cream hover:bg-warm-100 border border-sand text-warm-950 font-bold tracking-widest-plus uppercase transition-colors duration-200">
+          <Button onClick={()=>login("google")} className="w-full flex items-center justify-center gap-3 py-3.5 rounded-sm bg-cream hover:bg-warm-100 border border-sand text-warm-950 font-bold tracking-widest-plus uppercase transition-colors duration-200" isLoading={loading} disabled={loading}>
             <GoogleIcon />
             {isSignUp ? 'Sign up with Google' : 'Sign in with Google'}
           </Button>
 
-          <Button variant='secondary' onClick={()=>login("github")} className="w-full flex items-center justify-center gap-3 py-3.5 rounded-sm bg-warm-800 hover:bg-warm-750 border border-warm-700 text-warm-50 font-bold tracking-widest-plus uppercase transition-colors duration-200">
+          <Button variant='secondary' onClick={()=>login("github")} className="w-full flex items-center justify-center gap-3 py-3.5 rounded-sm bg-warm-800 hover:bg-warm-750 border border-warm-700 text-warm-50 font-bold tracking-widest-plus uppercase transition-colors duration-200" isLoading={loading} disabled={loading}>
             <GitHubIcon />
             {isSignUp ? 'Sign up with GitHub' : 'Sign in with GitHub'}
           </Button>

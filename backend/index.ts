@@ -3,6 +3,7 @@ import { tavily } from "@tavily/core"
 import { Ollama } from "ollama"
 import {SYSTEM_PROMPT} from "./prompt.ts"
 import { prisma } from "./db.ts";
+import { authMiddleware } from "./middlewares/authMiddleware.ts";
 const app = express();
 const client = tavily({ apiKey: process.env.TAVILY_API_KEY});
 const ollama = new Ollama({
@@ -15,14 +16,15 @@ const ollama = new Ollama({
 
 
 app.use(express.json());
-app.post( "/signup" , async ( req , res )=>{
+
+//signup and signin is managed by supabase auth
+
+app.post( "/conversations/" , authMiddleware , async ( req , res )=>{
+    //list of all past conversations by user id from db
+    
+
 } )
-app.post( "/signin" , async ( req , res )=>{
-} )
-app.get( "/conversations" , async ( req , res )=>{
-    //list of all past conversations from db
-} )
-app.get( "/conversation/:conversationId" , async ( req , res) => {
+app.get( "/conversation/:conversationId" , authMiddleware , async ( req , res) => {
     //get a specific conversation from db 
 })
 app.post( "/ask" , async ( req , res )=>{
@@ -81,7 +83,7 @@ app.post( "/ask" , async ( req , res )=>{
     res.end()
 } )
 
-app.post( "/ask/follow_up" , async ( req , res )=>{
+app.post( "/ask/follow_up" , authMiddleware , async ( req , res )=>{
     // Step 1 - get existing chat from the db
     // Step 1.5- TODO : Do context engineering here [why? - the whole history of a chat might be too much of tokens to send and exhaust]
     // Step 2 - forward the full history to the LLM
