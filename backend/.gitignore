@@ -1,36 +1,41 @@
-# dependencies (bun install)
-node_modules
+# Dependencies
+node_modules/
+bun.lock
+bun.lockb
+.bun-install-cache/
 
-# output
-out
-dist
-*.tgz
-
-# code coverage
-coverage
-*.lcov
-
-# logs
-logs
-_.log
-report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
-
-# dotenv environment variable files
+# Environment Variables
 .env
-.env.development.local
-.env.test.local
-.env.production.local
 .env.local
+.env.*.local
+!.env.example
 
-# caches
-.eslintcache
-.cache
-*.tsbuildinfo
+# Build & Logs
+dist/
+build/
+out/
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# IntelliJ based IDEs
-.idea
+# Prisma
+# Ignores generated Prisma clients and query engines to prevent compatibility issues across machines
+/node_modules/.prisma/
+/src/generated/prisma/
+.prisma/
 
-# Finder (MacOS) folder config
+# OS & Editor
 .DS_Store
-
-/generated/prisma
+Thumbs.db
+.vscode/
+.idea/
+*.sublime-workspace
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
