@@ -1,5 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 import type { Request, Response, NextFunction } from "express";
+import { prisma } from "../db";
 
 const supabase = createClient(
   process.env.SUPABASE_URL!,
@@ -28,8 +29,30 @@ export const authMiddleware = async (
     return res.status(401).json({
       error: error?.message ?? "Invalid or expired authentication token",
     });
+  }else{
+    const checkUserExists = await prisma.users.findUnique({
+      where : {
+        email : data.user.email
+      }
+    })
+
+    
+    
+    if(!checkUserExists){
+        const createUser = await prisma.users.create({
+          data : {
+            id : data.user.id,
+            email : data.user?.email!,
+            provider : data.user?.app_metadata.provider === "google" ? "GOOGLE" : "GITHUB",
+            name :  data.user.user_metadata.full_name
+          }
+        })
+        
+        
+    } 
+    res.locals.user = data.user;
   }
 
-  res.locals.user = data.user;
+  
   next();
 };

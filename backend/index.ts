@@ -4,7 +4,10 @@ import { Ollama } from "ollama"
 import {SYSTEM_PROMPT} from "./prompt.ts"
 import { prisma } from "./db.ts";
 import { authMiddleware } from "./middlewares/authMiddleware.ts";
+import cors from "cors"
+
 const app = express();
+
 const client = tavily({ apiKey: process.env.TAVILY_API_KEY});
 const ollama = new Ollama({
   host: "https://ollama.com",
@@ -14,20 +17,29 @@ const ollama = new Ollama({
 });
 
 
-
+app.use(cors())
 app.use(express.json());
 
 //signup and signin is managed by supabase auth
 
-app.post( "/conversations/" , authMiddleware , async ( req , res )=>{
-    //list of all past conversations by user id from db
-    
 
+app.post( "/conversations" , authMiddleware , async ( req , res )=>{
+    //list of all past conversations by user id from db
+    //paginate
+    const userId = res.locals.user.id
+    const getConversations = await prisma.conversation.findMany({
+        where : { userId : userId}
+    })
+        res.send({
+            conversations : {getConversations}
+        })
+
+   
 } )
 app.get( "/conversation/:conversationId" , authMiddleware , async ( req , res) => {
     //get a specific conversation from db 
 })
-app.post( "/ask" , async ( req , res )=>{
+app.post( "/ask" , authMiddleware , async ( req , res )=>{
     //get query from the user;
     const userQuery = req.body.query;
     /*  EXAMPLE RESPONSE FROM TAVILY
@@ -68,6 +80,13 @@ app.post( "/ask" , async ( req , res )=>{
                 stream: true,
     });
 
+    const storeConversation = prisma.conversation.create({
+        data : {
+            userId,
+            title : userQuery,
+            messages : response
+        }
+    })
     for await (const part of response) {
     res.write(part.message.content);
     }

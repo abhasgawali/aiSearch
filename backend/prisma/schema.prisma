@@ -14,8 +14,8 @@ datasource db {
 //defining the schema
 
 model Users{
-  id            String          @id  @default(uuid())
-  email         String
+  id            String          @id     @unique  @default(uuid())
+  email         String          @unique
   provider      AuthProvider
   name          String
   conversations Conversation[]
