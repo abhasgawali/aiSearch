@@ -14,6 +14,7 @@ function App() {
         <Routes>
           <Route path='/auth' element={<Auth/>} />
           <Route path='/ask' element={<ProtectedRoute><Dashboard/></ProtectedRoute>} />
+          <Route path='/ask/:id' element={<ProtectedRoute><Dashboard/></ProtectedRoute>} />
         </Routes>
       </BrowserRouter>
     </ToastProvider>

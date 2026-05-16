@@ -7,6 +7,7 @@ import { prisma } from "./db.ts";
 import { authMiddleware } from "./middlewares/authMiddleware.ts";
 import cors from "cors"
 import { PaginationSchema, AskSchema, FollowUpSchema, UpdateConversationSchema } from "./validation.ts"
+import { Result } from "pg";
 
 const slugify = (text: string) => text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
@@ -116,12 +117,13 @@ app.post( "/ask" , authMiddleware , async ( req , res )=>{
                 url   : result.url
             }
         ))));
-
-        await prisma.conversation.create({
+            
+        const newConversation = await prisma.conversation.create({
             data: {
                 userId,
                 title: userQuery,
                 slug: slugify(userQuery),
+                sources : webSearchResult.map(result=>(result.url)),
                 messages: {
                     create: [
                         { role: 'User', content: userQuery },
@@ -131,6 +133,7 @@ app.post( "/ask" , authMiddleware , async ( req , res )=>{
             }
         });
 
+        res.write(`\n------ID------\n${newConversation.id}`);
         res.end();
     } catch (e) {
         console.error(e);

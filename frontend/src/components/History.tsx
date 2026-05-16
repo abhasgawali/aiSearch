@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { api } from "../api/config";
-import { useNavigate } from "react-router";
 
 interface Conversation {
   id: string;
@@ -18,7 +17,6 @@ export default function History({
 }) {
   const [conversations, setConversations] = useState<Conversation[]>([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchHistory() {
@@ -36,17 +34,14 @@ export default function History({
   }, []);
 
   return (
-    <div className="flex flex-col gap-2 mt-4">
-      <p className="px-4 text-[10px] font-bold tracking-widest uppercase text-warm-500 mb-2">
-        Recent Searches
-      </p>
+    <div className="flex flex-col gap-2 mt-4 font-mono">
       {loading ? (
-        <div className="px-4 py-2 text-xs text-warm-600 animate-pulse">
-          Loading history...
+        <div className="px-4 py-2 text-xs text-cyber-600 animate-pulse">
+          Loading...
         </div>
       ) : conversations.length === 0 ? (
-        <div className="px-4 py-2 text-xs text-warm-600 italic">
-          No recent searches
+        <div className="px-4 py-2 text-xs text-cyber-600 italic">
+          No history
         </div>
       ) : (
         <div className="space-y-1">
@@ -55,14 +50,13 @@ export default function History({
               key={conv.id}
               onClick={() => {
                 onSelect(conv.id);
-                navigate(`/ask/${conv.id}`);
               }}
               className={[
-                'w-full px-4 py-2 rounded-sm text-left transition-colors duration-150',
-                'text-xs font-medium tracking-wide truncate',
+                'w-full px-4 py-2 rounded-lg text-left transition-colors duration-150',
+                'text-xs font-medium tracking-wide truncate border',
                 activeId === conv.id
-                  ? 'bg-warm-800 text-warm-50'
-                  : 'text-warm-400 hover:bg-warm-850 hover:text-warm-300',
+                  ? 'bg-cyber-primary/10 text-cyber-primary border-cyber-primary/30'
+                  : 'text-cyber-400 hover:bg-cyber-800/50 hover:text-cyber-200 border-transparent',
               ].join(' ')}
             >
               {conv.title}

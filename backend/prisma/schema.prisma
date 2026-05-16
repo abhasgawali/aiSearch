@@ -26,6 +26,7 @@ model Conversation{
   title         String?
   slug          String
   userId        String
+  sources       String[]
   user          Users          @relation( fields: [userId] , references: [id] )
   messages      Message[]
 }

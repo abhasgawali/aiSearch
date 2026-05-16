@@ -1,49 +1,34 @@
 @import "tailwindcss";
 
-/* ── Warm Dark Luxury Theme ── */
+/* ── Cyberpunk Developer Theme ── */
 @theme {
-  --color-warm-950: #100e0b;
-  --color-warm-900: #1a1612;
-  --color-warm-850: #201c17;
-  --color-warm-800: #2a2420;
-  --color-warm-750: #33302a;
-  --color-warm-700: #3d3830;
-  --color-warm-600: #4e4840;
-  --color-warm-500: #6b6458;
-  --color-warm-400: #8a7a6a;
-  --color-warm-300: #a89880;
-  --color-warm-200: #c8b89a;
-  --color-warm-100: #e8d8c0;
-  --color-warm-50:  #f5f0e8;
+  --color-cyber-950: #050505;
+  --color-cyber-900: #0a0a0a;
+  --color-cyber-850: #111111;
+  --color-cyber-800: #171717;
+  --color-cyber-750: #1f1f1f;
+  --color-cyber-700: #262626;
+  --color-cyber-600: #333333;
+  --color-cyber-500: #555555;
+  --color-cyber-400: #888888;
+  --color-cyber-300: #a3a3a3;
+  --color-cyber-200: #d4d4d4;
+  --color-cyber-100: #e5e5e5;
+  --color-cyber-50:  #f5f5f5;
 
-  --color-cream:    #f2ede4;
-  --color-sand:     #d4c9b4;
+  /* Accent Color */
+  --color-cyber-primary: #6B6BFF;
+  --color-cyber-primary-hover: #5555DD;
+  --color-cyber-primary-light: #8888FF;
+  --color-cyber-primary-dark: #4949CC;
 
   /* Semantic UI Colors */
-  --color-success: #8ab88a;
-  --color-success-bg: #1e2a1e;
-  --color-success-border: #2a3d2a;
-
-  --color-warning: #c8a870;
-  --color-warning-bg: #2a2415;
-  --color-warning-border: #3d3620;
-
-  --color-error: #c88080;
-  --color-error-bg: #2a1a1a;
-  --color-error-border: #3d2828;
-
-  --color-info: #7a9ab8;
-  --color-info-bg: #1a1e2a;
-  --color-info-border: #28303d;
-
-  /* Typography */
-  --text-xxs: 0.625rem; /* 10px */
-  --tracking-widest-plus: 0.14em;
+  --color-success: #10b981;
+  --color-success-bg: #064e3b;
+  --color-success-border: #047857;
 
   /* Shadows */
-  --shadow-dropdown: 0 8px 32px rgba(0, 0, 0, 0.5);
-  --shadow-elevated: 0 4px 24px rgba(0, 0, 0, 0.5);
-  --shadow-toast: 0 4px 20px rgba(0, 0, 0, 0.4);
+  --shadow-elevated: 0 4px 24px rgba(0, 0, 0, 0.6);
 }
 
 /* Custom animations */
@@ -83,9 +68,9 @@ html {
 }
 
 body {
-  background-color: #100e0b;
-  color: #f5f0e8;
-  font-family: 'Georgia', 'Times New Roman', serif;
+  background-color: #050505;
+  color: #f5f5f5;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   -webkit-font-smoothing: antialiased;
 }
 
