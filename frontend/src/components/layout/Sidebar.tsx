@@ -14,10 +14,11 @@ interface SidebarProps {
   onSelect?: (value: string) => void;
   footer?: React.ReactNode;
   collapsible?: boolean;
+  children?: React.ReactNode;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
-  items, activeItem, onSelect, footer, collapsible = true,
+  items, activeItem, onSelect, footer, collapsible = true, children,
 }) => {
   const [isOpen, setIsOpen] = useState(true);
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
@@ -104,6 +105,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 )}
               </div>
             ))}
+            {children}
           </nav>
 
           {footer && (
