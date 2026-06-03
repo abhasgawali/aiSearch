@@ -1,15 +1,5 @@
 # backend
 
-To install dependencies:
+This folder contains the Bun/Express backend for the aiSearch project.
 
-```bash
-bun install
-```
-
-To run:
-
-```bash
-bun run index.ts
-```
-
-This project was created using `bun init` in bun v1.3.9. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
+For architecture, setup, and usage details, see the root `README.md` in the project root.
